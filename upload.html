@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>文件远程管理系统</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Content-Language" content="zh-CN" />
+	<!-- <link rel="stylesheet" type="text/css" href="upload_stylesheet.css"> -->
+	<link rel="stylesheet" type="text/css" href="./static/css/stylesheet.css">
+	<script type="text/javascript" src="./static/js/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript">
+		function getpath_now() {
+			$.get("./page/getpath_now.php", function(data) {
+
+				console.log("path now: " + data);
+				$("#path-name-now").append(data);
+			});
+		}
+
+		function back() {
+
+			var URL_HOME = 'index.php';
+			// 跳转到该URL
+			window.location.href = URL_HOME;
+		}
+
+		function get_feedback() {
+			/*获取后台发来的JSON*/
+		$.getJSON("./page/getFeedback_upload.php", function(data) {
+
+				    console.log("数据: " + data);
+				    console.log("数据长度: " + data.length);
+
+				    // var js = JSON.parse(data);
+				    // console.log(js);
+				    for(var i = 0; i < data.length; i++) {
+
+				   		console.log(data[i]);
+				   		// 解析JSON数组中的各个JSON
+				   		var obj = JSON.parse(data[i]);
+
+			   			if(data.length == 1) {
+				   			if ("undefined" != typeof obj.name) {
+				   				$("#feedback_upload").append("<p>" + obj.name + ' : ' + obj.status + "</p>");
+				   			}
+				   			else if("undefined" != typeof obj.noFile) {
+				   				$("#feedback_upload").append("<p>" + obj.noFile + "</p>");
+				   			}
+				   		}
+				   		else if ("undefined" != typeof obj.name) {
+				   			$("#feedback_upload").append("<p>" + obj.name + ' : ' + obj.status + "</p>");
+				   		}
+				    }
+
+					$.get("./page/reset_feedback.php");
+				    // 跳转到该URL
+					// window.location.href = "reset_feedback.php";
+			});
+		}
+	</script>
+</head>
+<body>
+	<h1>文件上传</h1>
+	<div class="contents">
+		<div class="navigation">
+			<button class="button white" id = "back-home" onclick="back()">返回</button>
+		</div>
+		<div class="path-now">
+			<span class="path-name" id="path-name-now">当前目录(上传的文件将存储在此目录下):</span>
+			<script type="text/javascript">
+				getpath_now();
+			</script>
+		</div>
+
+			<form action="./page/do_upload.php" method="post" enctype="multipart/form-data">
+			<input class = "button white" type="file" name="files_upload[]" multiple="multiple"/>
+		    <input class = "button white" type="submit" value="上传文件"/>
+		</form>
+		<div id="feedback_upload"></div>
+		<script>
+		 	get_feedback();
+		</script>
+	</div>
+
+</body>
+</html>

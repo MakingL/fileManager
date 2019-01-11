@@ -1,0 +1,17 @@
+h1 {
+    /*color:#5166dd;*/
+    color: #414aae;
+    text-align:center;
+    background-color: transparent;
+    border: none;
+    font-family: "Microsoft Yahei";
+    letter-spacing: 15px;
+}
+
+.contents {
+    margin-top:  5px;
+    margin-left: 15%;
+    background-color: transparent;
+    border: none;
+    font-family: "Microsoft Yahei";
+}
